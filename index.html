@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Journal d'Humeur</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Mon Journal d'Humeur</h1>
+            <p class="subtitle">Suivez vos émotions au quotidien</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Section d'ajout d'humeur -->
+            <section class="mood-input-section">
+                <div class="date-display">
+                    <span id="currentDate"></span>
+                </div>
+                
+                <div class="mood-selector">
+                    <h3>Comment vous sentez-vous aujourd'hui ?</h3>
+                    <div class="mood-options">
+                        <button class="mood-btn" data-mood="très-heureux" data-value="5">
+                            <span class="mood-emoji">😊</span>
+                            <span class="mood-label">Très heureux</span>
+                        </button>
+                        <button class="mood-btn" data-mood="heureux" data-value="4">
+                            <span class="mood-emoji">🙂</span>
+                            <span class="mood-label">Heureux</span>
+                        </button>
+                        <button class="mood-btn" data-mood="neutre" data-value="3">
+                            <span class="mood-emoji">😐</span>
+                            <span class="mood-label">Neutre</span>
+                        </button>
+                        <button class="mood-btn" data-mood="triste" data-value="2">
+                            <span class="mood-emoji">😢</span>
+                            <span class="mood-label">Triste</span>
+                        </button>
+                        <button class="mood-btn" data-mood="énervé" data-value="1">
+                            <span class="mood-emoji">😡</span>
+                            <span class="mood-label">Énervé</span>
+                        </button>
+                        <button class="mood-btn" data-mood="fatigué" data-value="0">
+                            <span class="mood-emoji">😴</span>
+                            <span class="mood-label">Fatigué</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="note-section">
+                    <label for="moodNote">Ajouter une note (optionnel) :</label>
+                    <textarea id="moodNote" placeholder="Qu'est-ce qui a influencé votre humeur aujourd'hui ?" rows="3"></textarea>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="saveMood" class="btn btn-primary">Enregistrer mon humeur</button>
+                    <button id="clearForm" class="btn btn-secondary">Effacer</button>
+                </div>
+            </section>
+
+            <!-- Section statistiques -->
+            <section class="stats-section">
+                <h3>Vos statistiques</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalDays">0</span>
+                        <span class="stat-label">Jours enregistrés</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="currentStreak">0</span>
+                        <span class="stat-label">Série actuelle</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="avgMood">-</span>
+                        <span class="stat-label">Humeur moyenne</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section historique -->
+            <section class="history-section">
+                <div class="history-header">
+                    <h3>Historique</h3>
+                    <div class="filter-controls">
+                        <select id="filterPeriod">
+                            <option value="7">7 derniers jours</option>
+                            <option value="30">30 derniers jours</option>
+                            <option value="all">Tous</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="moodHistory" class="mood-history">
+                    <p class="no-data">Aucune entrée pour le moment</p>
+                </div>
+            </section>
+
+            <!-- Section graphique -->
+            <section class="chart-section">
+                <div class="chart-header">
+                    <h3>Évolution de votre humeur</h3>
+                    <div class="chart-controls">
+                        <select id="chartPeriod">
+                            <option value="7">7 derniers jours</option>
+                            <option value="30" selected>30 derniers jours</option>
+                            <option value="all">Toutes les données</option>
+                        </select>
+                    </div>
+                </div>
+                <canvas id="moodChart" width="400" height="200"></canvas>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal d'édition -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Modifier votre entrée</h2>
+            <div class="modal-mood-selector">
+                <div class="mood-options">
+                    <button class="mood-btn" data-mood="très-heureux" data-value="5">
+                        <span class="mood-emoji">😊</span>
+                        <span class="mood-label">Très heureux</span>
+                    </button>
+                    <button class="mood-btn" data-mood="heureux" data-value="4">
+                        <span class="mood-emoji">🙂</span>
+                        <span class="mood-label">Heureux</span>
+                    </button>
+                    <button class="mood-btn" data-mood="neutre" data-value="3">
+                        <span class="mood-emoji">😐</span>
+                        <span class="mood-label">Neutre</span>
+                    </button>
+                    <button class="mood-btn" data-mood="triste" data-value="2">
+                        <span class="mood-emoji">😢</span>
+                        <span class="mood-label">Triste</span>
+                    </button>
+                    <button class="mood-btn" data-mood="énervé" data-value="1">
+                        <span class="mood-emoji">😡</span>
+                        <span class="mood-label">Énervé</span>
+                    </button>
+                    <button class="mood-btn" data-mood="fatigué" data-value="0">
+                        <span class="mood-emoji">😴</span>
+                        <span class="mood-label">Fatigué</span>
+                    </button>
+                </div>
+            </div>
+            <div class="note-section">
+                <label for="editMoodNote">Note :</label>
+                <textarea id="editMoodNote" rows="3"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button id="updateMood" class="btn btn-primary">Mettre à jour</button>
+                <button id="cancelEdit" class="btn btn-secondary">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
